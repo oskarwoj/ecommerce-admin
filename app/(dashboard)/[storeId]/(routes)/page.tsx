@@ -10,7 +10,7 @@ const DashboardPage: React.FC<DashboardPageProps> = async ({ params }) => {
       id: params.storeId,
     },
   });
-  return <div>Active Store: {store?.name}</div>;
+  return <div>Activezz Store: {store?.name}</div>;
 };
 
 export default DashboardPage;
