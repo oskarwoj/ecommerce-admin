@@ -1,7 +1,7 @@
 "use client ";
 
-import { FC } from "react";
 import { Copy, Server } from "lucide-react";
+import { FC } from "react";
 import toast from "react-hot-toast";
 
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -24,7 +24,7 @@ const variantMap: Record<ApiAlertProps["variant"], BadgeProps["variant"]> = {
   admin: "destructive",
 };
 
-const ApiAlert: FC<ApiAlertProps> = ({
+export const ApiAlert: FC<ApiAlertProps> = ({
   title,
   description,
   variant = "public",
@@ -52,5 +52,3 @@ const ApiAlert: FC<ApiAlertProps> = ({
     </Alert>
   );
 };
-
-export default ApiAlert;
