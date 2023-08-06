@@ -1,15 +1,16 @@
 "use client";
-import { cn } from "@/lib/utils";
+
 import Link from "next/link";
 import { useParams, usePathname } from "next/navigation";
-import React from "react";
 
-const MainNav = ({
+import { cn } from "@/lib/utils";
+
+export function MainNav({
   className,
   ...props
-}: React.HTMLAttributes<HTMLElement>) => {
-  const params = useParams();
+}: React.HTMLAttributes<HTMLElement>) {
   const pathname = usePathname();
+  const params = useParams();
 
   const routes = [
     {
@@ -67,7 +68,7 @@ const MainNav = ({
             "text-sm font-medium transition-colors hover:text-primary",
             route.active
               ? "text-black dark:text-white"
-              : "text-muted-foreground"
+              : "text-muted-foreground",
           )}
         >
           {route.label}
@@ -75,6 +76,4 @@ const MainNav = ({
       ))}
     </nav>
   );
-};
-
-export default MainNav;
+}

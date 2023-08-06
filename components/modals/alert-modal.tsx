@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react";
 
 import { Modal } from "@/components/ui/modal";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 
 interface AlertModalProps {
   isOpen: boolean;
   onClose: () => void;
   onConfirm: () => void;
-  loading?: boolean;
+  loading: boolean;
 }
 
 export const AlertModal: React.FC<AlertModalProps> = ({
@@ -24,12 +24,14 @@ export const AlertModal: React.FC<AlertModalProps> = ({
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) return null;
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <Modal
       title="Are you sure?"
-      description="This action cannot be undone"
+      description="This action cannot be undone."
       isOpen={isOpen}
       onClose={onClose}
     >

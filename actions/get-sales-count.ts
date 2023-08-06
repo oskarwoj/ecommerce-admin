@@ -1,6 +1,6 @@
 import prismadb from "@/lib/prismadb";
 
-const getSalesCount = async (storeId: string) => {
+export const getSalesCount = async (storeId: string) => {
   const salesCount = await prismadb.order.count({
     where: {
       storeId,
@@ -10,5 +10,3 @@ const getSalesCount = async (storeId: string) => {
 
   return salesCount;
 };
-
-export default getSalesCount;

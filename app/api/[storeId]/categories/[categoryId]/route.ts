@@ -1,11 +1,11 @@
-import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { auth } from "@clerk/nextjs";
 
 import prismadb from "@/lib/prismadb";
 
 export async function GET(
   req: Request,
-  { params }: { params: { categoryId: string } }
+  { params }: { params: { categoryId: string } },
 ) {
   try {
     if (!params.categoryId) {
@@ -30,7 +30,7 @@ export async function GET(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { categoryId: string; storeId: string } }
+  { params }: { params: { categoryId: string; storeId: string } },
 ) {
   try {
     const { userId } = auth();
@@ -69,7 +69,7 @@ export async function DELETE(
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { categoryId: string; storeId: string } }
+  { params }: { params: { categoryId: string; storeId: string } },
 ) {
   try {
     const { userId } = auth();

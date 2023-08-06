@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { ImagePlus, Trash } from "lucide-react";
 import { CldUploadWidget } from "next-cloudinary";
+import { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
+import { ImagePlus, Trash } from "lucide-react";
 
 interface ImageUploadProps {
   disabled?: boolean;
@@ -26,13 +26,13 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) {
-    return null;
-  }
-
   const onUpload = (result: any) => {
     onChange(result.info.secure_url);
   };
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <div>
@@ -47,26 +47,27 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
                 type="button"
                 onClick={() => onRemove(url)}
                 variant="destructive"
-                size="icon"
+                size="sm"
               >
                 <Trash className="h-4 w-4" />
               </Button>
             </div>
-            <Image fill className="object-cover" src={url} alt="Image" />
+            <Image fill className="object-cover" alt="Image" src={url} />
           </div>
         ))}
       </div>
-      <CldUploadWidget onUpload={onUpload} uploadPreset="kfsnalhb">
+      <CldUploadWidget onUpload={onUpload} uploadPreset="t4drjppf">
         {({ open }) => {
           const onClick = () => {
             open();
           };
+
           return (
             <Button
               type="button"
               disabled={disabled}
-              onClick={onClick}
               variant="secondary"
+              onClick={onClick}
             >
               <ImagePlus className="h-4 w-4 mr-2" />
               Upload an Image
