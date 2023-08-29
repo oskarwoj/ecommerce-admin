@@ -10,6 +10,8 @@ import UserMenu from "./navbar/UserMenu";
 
 const Navbar = async () => {
 	const currentUser = await getCurrentUser();
+
+	console.log("currentUser", currentUser);
 	const { userId } = auth();
 
 	if (!userId) {
