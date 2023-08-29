@@ -1,7 +1,6 @@
-import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
-import getCurrentUser from "@/app/actions/getCurrentUser";
+import getCurrentUser from "@/actions/getCurrentUser";
 import { MainNav } from "@/components/main-nav";
 import StoreSwitcher from "@/components/store-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -11,15 +10,13 @@ import UserMenu from "./navbar/UserMenu";
 const Navbar = async () => {
 	const currentUser = await getCurrentUser();
 
-	const { userId } = auth();
-
-	if (!userId) {
-		redirect("/sign-in");
+	if (!currentUser) {
+		redirect("/");
 	}
 
 	const stores = await prismadb.store.findMany({
 		where: {
-			userId,
+			userId: currentUser.id,
 		},
 	});
 
