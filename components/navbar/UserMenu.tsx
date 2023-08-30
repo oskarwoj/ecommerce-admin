@@ -7,7 +7,6 @@ import { AiOutlineMenu } from "react-icons/ai";
 
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
-import useRentModal from "@/app/hooks/useRentModal";
 import { SafeUser } from "@/app/types";
 
 import Avatar from "../Avatar";
@@ -22,7 +21,6 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 
 	const loginModal = useLoginModal();
 	const registerModal = useRegisterModal();
-	const rentModal = useRentModal();
 
 	const [isOpen, setIsOpen] = useState(false);
 
@@ -79,14 +77,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
 									label="My orders"
 									onClick={() => router.push("/reservations")}
 								/>
-								<MenuItem
-									label="My properties"
-									onClick={() => router.push("/properties")}
-								/>
-								<MenuItem
-									label="My Next Shop your home"
-									onClick={rentModal.onOpen}
-								/>
+
 								<hr />
 								<MenuItem label="Logout" onClick={() => signOut()} />
 							</>

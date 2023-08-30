@@ -1,52 +1,70 @@
 "use client";
 
-import axios from "axios";
 import { signIn } from "next-auth/react";
 import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import { AiFillGithub } from "react-icons/ai";
+import { FcGoogle } from "react-icons/fc";
+
+import * as z from "zod";
 
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
 
-import Heading from "../Heading";
-import Input from "../inputs/Input";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { Heading } from "@/components/ui/heading";
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import Modal from "./Modal";
+
+const FormSchema = z.object({
+	name: z.string().min(2, {
+		message: "Name must be at least 2 characters.",
+	}),
+	password: z.string().min(2, {
+		message: "Password must be at least 2 characters.",
+	}),
+	email: z.string().min(2, {
+		message: "Email must be at least 2 characters.",
+	}),
+});
 
 const RegisterModal = () => {
 	const registerModal = useRegisterModal();
 	const loginModal = useLoginModal();
 	const [isLoading, setIsLoading] = useState(false);
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<FieldValues>({
+	const form = useForm<z.infer<typeof FormSchema>>({
+		resolver: zodResolver(FormSchema),
 		defaultValues: {
-			name: "",
 			email: "",
+			name: "",
 			password: "",
 		},
 	});
 
-	const onSubmit: SubmitHandler<FieldValues> = (data) => {
-		setIsLoading(true);
-
-		axios
-			.post("/api/register", data)
-			.then(() => {
-				toast.success("Registered!");
-				registerModal.onClose();
-				loginModal.onOpen();
-			})
-			.catch((error) => {
-				toast.error(error);
-			})
-			.finally(() => {
-				setIsLoading(false);
-			});
+	const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+		try {
+			setIsLoading(true);
+			await axios.post("/api/register", data);
+			toast.success("Registered!");
+			registerModal.onClose();
+			onToggle();
+		} catch (error: any) {
+			toast.error("Something went wrong.");
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const onToggle = useCallback(() => {
@@ -55,62 +73,80 @@ const RegisterModal = () => {
 	}, [registerModal, loginModal]);
 
 	const bodyContent = (
-		<div className="flex flex-col gap-4">
-			<Heading title="Welcome to My Next Shop" subtitle="Create an account!" />
-			<Input
-				id="email"
-				label="Email"
-				disabled={isLoading}
-				register={register}
-				errors={errors}
-				required
-			/>
-			<Input
-				id="name"
-				label="Name"
-				disabled={isLoading}
-				register={register}
-				errors={errors}
-				required
-			/>
-			<Input
-				id="password"
-				label="Password"
-				type="password"
-				disabled={isLoading}
-				register={register}
-				errors={errors}
-				required
-			/>
-		</div>
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6">
+				<Heading
+					title="Welcome to My Next Shop"
+					description="Create an account!"
+				/>
+				<FormField
+					control={form.control}
+					name="email"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Email</FormLabel>
+							<FormControl>
+								<Input id="email" disabled={isLoading} required {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="name"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Name</FormLabel>
+							<FormControl>
+								<Input id="name" disabled={isLoading} required {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+				<FormField
+					control={form.control}
+					name="password"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Password</FormLabel>
+							<FormControl>
+								<Input id="password" disabled={isLoading} required {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+			</form>
+		</Form>
 	);
 
 	const footerContent = (
 		<div className="flex flex-col gap-4 mt-3">
 			<hr />
-			<Button variant="outline" onClick={() => signIn("google")}>
+			<Button
+				variant="outline"
+				onClick={() => signIn("google")}
+				className="flex gap-4"
+			>
+				<FcGoogle />
 				Continue with Google
 			</Button>
-			<Button variant="outline" onClick={() => signIn("github")}>
+			<Button
+				variant="outline"
+				onClick={() => signIn("github")}
+				className="flex gap-4"
+			>
+				<AiFillGithub />
 				Continue with Github
 			</Button>
-			<div
-				className="
-          text-neutral-500
-          text-center
-          mt-4
-          font-light
-        "
-			>
+			<div className="text-neutral-500 text-center mt-4 font-light">
 				<p>
 					Already have an account?
 					<span
 						onClick={onToggle}
-						className="
-              text-neutral-800
-              cursor-pointer
-              hover:underline
-            "
+						className="text-neutral-800cursor-pointer hover:underline"
 					>
 						{" "}
 						Log in
@@ -124,10 +160,8 @@ const RegisterModal = () => {
 		<Modal
 			disabled={isLoading}
 			isOpen={registerModal.isOpen}
-			title="Register"
-			actionLabel="Continue"
 			onClose={registerModal.onClose}
-			onSubmit={handleSubmit(onSubmit)}
+			onSubmit={form.handleSubmit(onSubmit)}
 			body={bodyContent}
 			footer={footerContent}
 		/>

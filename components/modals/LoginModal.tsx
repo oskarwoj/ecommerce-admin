@@ -1,17 +1,37 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useCallback, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
-import Heading from "../Heading";
-import Input from "../inputs/Input";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import {
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from "@/components/ui/form";
+import { Heading } from "@/components/ui/heading";
+import { Input } from "@/components/ui/input";
+import * as z from "zod";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
 import Modal from "./Modal";
+
+const FormSchema = z.object({
+	password: z.string().min(2, {
+		message: "Password must be at least 2 characters.",
+	}),
+	email: z.string().min(2, {
+		message: "Email must be at least 2 characters.",
+	}),
+});
 
 const LoginModal = () => {
 	const router = useRouter();
@@ -19,18 +39,15 @@ const LoginModal = () => {
 	const registerModal = useRegisterModal();
 	const [isLoading, setIsLoading] = useState(false);
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<FieldValues>({
+	const form = useForm<z.infer<typeof FormSchema>>({
+		resolver: zodResolver(FormSchema),
 		defaultValues: {
 			email: "",
 			password: "",
 		},
 	});
 
-	const onSubmit: SubmitHandler<FieldValues> = (data) => {
+	const onSubmit = async (data: z.infer<typeof FormSchema>) => {
 		setIsLoading(true);
 
 		signIn("credentials", {
@@ -57,26 +74,41 @@ const LoginModal = () => {
 	}, [loginModal, registerModal]);
 
 	const bodyContent = (
-		<div className="flex flex-col gap-4">
-			<Heading title="Welcome back" subtitle="Login to your account!" />
-			<Input
-				id="email"
-				label="Email"
-				disabled={isLoading}
-				register={register}
-				errors={errors}
-				required
-			/>
-			<Input
-				id="password"
-				label="Password"
-				type="password"
-				disabled={isLoading}
-				register={register}
-				errors={errors}
-				required
-			/>
-		</div>
+		<Form {...form}>
+			<form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6">
+				<Heading
+					title="Welcome to My Next Shop"
+					description="Create an account!"
+				/>
+				<FormField
+					control={form.control}
+					name="email"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Email</FormLabel>
+							<FormControl>
+								<Input id="email" disabled={isLoading} required {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+
+				<FormField
+					control={form.control}
+					name="password"
+					render={({ field }) => (
+						<FormItem>
+							<FormLabel>Password</FormLabel>
+							<FormControl>
+								<Input id="password" disabled={isLoading} required {...field} />
+							</FormControl>
+							<FormMessage />
+						</FormItem>
+					)}
+				/>
+			</form>
+		</Form>
 	);
 
 	const footerContent = (
@@ -110,10 +142,8 @@ const LoginModal = () => {
 		<Modal
 			disabled={isLoading}
 			isOpen={loginModal.isOpen}
-			title="Login"
-			actionLabel="Continue"
 			onClose={loginModal.onClose}
-			onSubmit={handleSubmit(onSubmit)}
+			onSubmit={form.handleSubmit(onSubmit)}
 			body={bodyContent}
 			footer={footerContent}
 		/>

@@ -10,6 +10,8 @@ export default async function SetupLayout({
 }) {
 	const currentUser = await getCurrentUser();
 
+	console.log("currentUser", currentUser);
+
 	if (!currentUser) {
 		redirect("/sign-up");
 	}
