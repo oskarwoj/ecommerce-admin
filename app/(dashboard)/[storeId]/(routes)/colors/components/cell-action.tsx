@@ -1,11 +1,12 @@
 "use client";
 
 import axios from "axios";
-import { useState } from "react";
 import { Copy, Edit, MoreHorizontal, Trash } from "lucide-react";
-import { toast } from "react-hot-toast";
 import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-hot-toast";
 
+import { AlertModal } from "@/components/modals/AlertModal";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -14,7 +15,6 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { AlertModal } from "@/components/modals/alert-modal";
 
 import { ColorColumn } from "./columns";
 
