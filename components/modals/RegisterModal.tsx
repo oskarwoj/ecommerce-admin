@@ -139,7 +139,7 @@ const RegisterModal = () => {
       <hr />
       <Button
         variant="outline"
-        onClick={() => signIn("google")}
+        onClick={() => signIn("google", { callbackUrl: "/" })}
         className="flex gap-4"
       >
         <FcGoogle />
@@ -147,7 +147,7 @@ const RegisterModal = () => {
       </Button>
       <Button
         variant="outline"
-        onClick={() => signIn("github")}
+        onClick={() => signIn("github", { callbackUrl: "/" })}
         className="flex gap-4"
       >
         <AiFillGithub />
