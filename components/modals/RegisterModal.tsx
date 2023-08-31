@@ -55,7 +55,7 @@ const RegisterModal = () => {
     try {
       setIsLoading(true);
 
-      await fetch("/api/register", {
+      const response = await fetch("/api/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -63,9 +63,13 @@ const RegisterModal = () => {
         body: JSON.stringify(data),
       });
 
-      toast.success("Registered!");
-      registerModal.onClose();
-      onToggle();
+      if (response.ok) {
+        toast.success("Registered!");
+        registerModal.onClose();
+        onToggle();
+      } else {
+        toast.error("Use another email");
+      }
     } catch (error: any) {
       toast.error("Something went wrong.");
     } finally {
