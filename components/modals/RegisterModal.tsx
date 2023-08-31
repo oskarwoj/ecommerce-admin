@@ -112,7 +112,13 @@ const RegisterModal = () => {
 						<FormItem>
 							<FormLabel>Password</FormLabel>
 							<FormControl>
-								<Input id="password" disabled={isLoading} required {...field} />
+								<Input
+									id="password"
+									type="password"
+									disabled={isLoading}
+									required
+									{...field}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -146,7 +152,7 @@ const RegisterModal = () => {
 					Already have an account?
 					<span
 						onClick={onToggle}
-						className="text-neutral-800cursor-pointer hover:underline"
+						className="text-neutral-800 font-bold cursor-pointer hover:underline"
 					>
 						{" "}
 						Log in

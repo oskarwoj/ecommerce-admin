@@ -4,6 +4,8 @@ import { signIn } from "next-auth/react";
 import { useCallback, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
+import { AiFillGithub } from "react-icons/ai";
+import { FcGoogle } from "react-icons/fc";
 
 import useLoginModal from "@/app/hooks/useLoginModal";
 import useRegisterModal from "@/app/hooks/useRegisterModal";
@@ -79,7 +81,7 @@ const LoginModal = () => {
 			<form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6">
 				<Heading
 					title="Welcome to My Next Shop"
-					description="Create an account!"
+					description="Sign in to your account!"
 				/>
 				<FormField
 					control={form.control}
@@ -102,7 +104,13 @@ const LoginModal = () => {
 						<FormItem>
 							<FormLabel>Password</FormLabel>
 							<FormControl>
-								<Input id="password" disabled={isLoading} required {...field} />
+								<Input
+									id="password"
+									type="password"
+									disabled={isLoading}
+									required
+									{...field}
+								/>
 							</FormControl>
 							<FormMessage />
 						</FormItem>
@@ -115,23 +123,30 @@ const LoginModal = () => {
 	const footerContent = (
 		<div className="flex flex-col gap-4 mt-3">
 			<hr />
-			<Button variant="outline" onClick={() => signIn("google")}>
+			<Button
+				variant="outline"
+				onClick={() => signIn("google")}
+				className="flex gap-4"
+			>
+				<FcGoogle />
 				Continue with Google
 			</Button>
-			<Button variant="outline" onClick={() => signIn("github")}>
+			<Button
+				variant="outline"
+				onClick={() => signIn("github")}
+				className="flex gap-4"
+			>
+				<AiFillGithub />
 				Continue with Github
 			</Button>
-			<div className=" text-neutral-500 text-center mt-4 font-light">
+			<div className="text-neutral-500 text-center mt-4 font-light">
 				<p>
 					First time here?
 					<span
 						onClick={onToggle}
-						className="
-              text-neutral-800
-              cursor-pointer
-              hover:underline
-            "
+						className="text-neutral-800 font-bold cursor-pointer hover:underline"
 					>
+						{" "}
 						Create an account
 					</span>
 				</p>
