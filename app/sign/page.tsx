@@ -1,6 +1,5 @@
 "use client";
 
-import LoginModal from "@/components/modals/LoginModal";
 import { useEffect } from "react";
 import useLoginModal from "../hooks/useLoginModal";
 
@@ -12,7 +11,7 @@ const SignInPage = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	return <LoginModal />;
+	return <></>;
 };
 
 export default SignInPage;
