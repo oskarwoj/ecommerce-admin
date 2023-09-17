@@ -78,7 +78,7 @@ const LoginModal = () => {
 
   const bodyContent = (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
         <Heading
           title="Welcome to My Next Shop"
           description="Sign in to your account!"
@@ -90,7 +90,13 @@ const LoginModal = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input id="email" disabled={isLoading} required {...field} />
+                <Input
+                  id="email"
+                  autoComplete="username"
+                  disabled={isLoading}
+                  required
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -105,6 +111,7 @@ const LoginModal = () => {
               <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input
+                  autoComplete="current-password"
                   id="password"
                   type="password"
                   disabled={isLoading}
@@ -144,7 +151,7 @@ const LoginModal = () => {
           First time here?
           <span
             onClick={onToggle}
-            className="cursor-pointer font-bold text-neutral-800 hover:underline"
+            className="cursor-pointer font-bold text-white hover:underline"
           >
             {" "}
             Create an account

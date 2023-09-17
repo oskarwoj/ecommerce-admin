@@ -76,7 +76,7 @@ const Modal: React.FC<ModalProps> = ({
         >
           <div
             className="translate  relative flex h-full w-full flex-col rounded-lg border-0
-			   bg-white shadow-lg outline-none focus:outline-none md:h-auto lg:h-auto"
+			   bg-slate-950 shadow-lg outline-none focus:outline-none md:h-auto lg:h-auto"
           >
             <button
               className="p-1border-0hover:opacity-70transition absolute right-2 top-2"
@@ -98,7 +98,7 @@ const Modal: React.FC<ModalProps> = ({
                 )}
                 <Button
                   disabled={disabled}
-                  variant="default"
+                  variant="destructive"
                   onClick={handleSubmit}
                   className="w-full"
                 >
